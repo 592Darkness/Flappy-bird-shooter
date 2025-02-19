@@ -39,19 +39,29 @@
             transform-origin: center;
         }
 
-        .pipe {
-            position: absolute;
-            width: 15%;
-            max-width: 60px;
-            background-color: #4CAF50;
-            box-sizing: border-box;
-            left: 100%;
-            border: 3px solid #2E7D32;
-            border-radius: 5px;
-        }
+      .pipe {
+        position: absolute;
+        width: 15%;
+        max-width: 60px;
+        background-color: #4CAF50; /* Initial pipe color */
+        box-sizing: border-box;
+        left: 100%;
+        border: 3px solid #2E7D32;
+        border-radius: 5px;
+        transition: background-color 0.2s ease; /* Smooth transition for damage effect */
+      }
 
-        .pipe-top { top: 0; }
+       .pipe-top { top: 0; }
+
         .pipe-bottom { bottom: 0; }
+
+
+        /* Style for damaged pipes */
+
+        .pipe.damaged {
+            background-color: #76b852; /* Lighter shade of green when hit */
+           /*  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E"); /* subtle crack*/
+        }
 
         #top-bar {
             position: absolute;
@@ -69,72 +79,102 @@
             box-sizing: border-box;
         }
 
-        #score-display, #rocket-count-display {
-            display: flex;
-            align-items: center;
-            font-size: 4vw;
-            max-font-size: 18px;
-        }
+      #score-display, #rocket-count-display {
+        display: flex;
+        align-items: center;
+         font-size: 4vw;
 
-        #score-display i, #rocket-count-display i {
-            margin-right: 5px;
-            font-size: 6vw;
-            max-font-size: 24px;
-        }
+         max-font-size: 18px; /*Add*/
 
-        #game-over-screen {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
+        }
+      #score-display i, #rocket-count-display i {
+     margin-right: 5px;
+      font-size: 6vw;
+
+     max-font-size: 24px;  /* max display correct*/
+         }
+
+         #game-over-screen {
+
+        position: absolute;
+     top: 50%;
+
+     left: 50%;
+         transform: translate(-50%, -50%);
+
+     background-color: rgba(0, 0, 0, 0.7);
+        color: white;
             padding: 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 20;
-            text-align: center;
-        }
-         #instructions {
-            margin-bottom: 10px;
-            font-size:  4vw;
-            max-font-size: 16px;
-          }
 
-        #restart-button {
+        border-radius: 10px;  /*Style */
+
+         display: none;
+
+         z-index: 20;
+
+     text-align: center; /*align Center for good visual position*/
+
+        }
+
+     #instructions {
+       margin-bottom: 10px;   /* instructions- down , */
+        font-size:  4vw;
+   max-font-size: 16px;
+         }
+  #restart-button {
             margin-top: 10px;
-            padding: 2vw 4vw;
-            font-size: 4vw;
-            max-font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+         padding: 2vw 4vw;
 
-        #restart-button:hover { background-color: #3e8e41; }
+      font-size: 4vw; /* vw,*/
+
+           max-font-size: 16px;
+
+  background-color: #4CAF50;  /* style*/
+
+      color: white;
+    border: none;
+
+
+          border-radius: 5px;  //
+
+           cursor: pointer;
+           }
+
+   #restart-button:hover {
+        background-color: #3e8e41;  //Hover Styles- and style
+
+    }
 
         .rocket {
-            position: absolute;
-            width: 2.5%;
-            max-width: 10px;
-            height: auto;
-            background-color: transparent;
-            z-index: 5;
+
+         position: absolute;  /*Rocket absolute */
+
+        width: 2.5%;  /* use good % for every device screen size, all devices correctly */
+          max-width: 10px; // limit , set on display
+           height: auto;
+
+       background-color: transparent;
+
+             /*  transition for a smoother launch, when new rocket appears, set transitions no needed*/
+
+             z-index: 5; /* ensure rockets good visibible  good over pipes */
+
         }
 
-        .rocket i {
-            color: red;
-            font-size: 5vw;
-            max-font-size: 20px;
-        }
+          .rocket i {
+      color: red;
+         font-size: 5vw;  // Responsive ( good practices). 5% viewports
+       max-font-size: 20px;
 
-        #final-score {
-            font-size: 6vw;
-            max-font-size: 25px;
-            font-weight: bold;
-        }
+      }
+      #final-score{  /* final game element  game text. Over.*/
+
+        font-size: 6vw;     /* Responsive values and, set relative the view, better view for the screen devices */
+
+    max-font-size: 25px;
+
+        font-weight: bold; // get bigger visual
+       }
 
     </style>
 </head>
@@ -157,349 +197,314 @@
     </div>
 
     <script>
-      const bird = document.getElementById('bird');
-const gameContainer = document.getElementById('game-container');
-const scoreDisplayValue = document.getElementById('score-value');
-const rocketCountDisplayValue = document.getElementById('rocket-value');
-const gameOverScreen = document.getElementById('game-over-screen');
-const finalScoreDisplay = document.getElementById('final-score');
-const restartButton = document.getElementById('restart-button');
+         const bird = document.getElementById('bird'); //element games ( the ) .
 
-let birdY = 200;
-let birdVelocity = 0;
-const gravity = 0.5;
-const jumpStrength = -8;
-let gameLoopInterval;
-let pipeSpawnInterval;
-let score = 0;
-let isGameOver = false;
-let pipes = [];
-let pipeSpeed = 2;
-let rockets = [];
-let rocketCount = 0;
-const ROCKET_SPEED = 8;
-let pipesPassedForRocket = 0;
+          const gameContainer = document.getElementById('game-container');
+         const scoreDisplayValue = document.getElementById('score-value'); //Score display in (game), games display score - score count
+         const rocketCountDisplayValue = document.getElementById('rocket-value');  // Rocket Count display, total- variable that get-
 
-let scoreToDisplay = 0;
+        // id of game element  from screen, if it  gets block as end  display game
+          const gameOverScreen = document.getElementById('game-over-screen');
 
-let rocketBoostTimeout = null;
+            // variable
+     const finalScoreDisplay = document.getElementById('final-score');  //
+
+      const restartButton = document.getElementById('restart-button'); // Get to game - for start new ones in to reset (restart
 
 
-let touchStartX = 0;
-let touchStartY = 0;
+          let birdY = 200;
+         let birdVelocity = 0;
 
+            const gravity = 0.5;
+    const jumpStrength = -8; //Strength up to variable, the force to travel and top -up direction when to - with
+        let gameLoopInterval; //id variables as general that creates a time and actions loop(spawn rockets at first )
+     let pipeSpawnInterval;  //  interval variable and time games, pipe variable that when, new, the
+  let score = 0;
+         let isGameOver = false;   // Variable. Check status,
+      let pipes = [];
+         let pipeSpeed = 2;   // Pipe - speed
 
+    let rockets = [];  // array - rockest total on games.
 
-function startGame() {
+     let rocketCount = 0;
 
-  isGameOver = false; //set Game State - variable state of general, on new game
-  birdY = gameContainer.offsetHeight * 0.3333;  // bird position set correctly on initial Y axys. 33% correctly - to
+         const ROCKET_SPEED = 8;  // x speed , travels (rockts constant for and always to games x + , forward), on any game actions
+     let pipesPassedForRocket = 0; // to count pipe passes for win and
 
- birdVelocity = 0; // set and keep ,velocity as intial, withouot jump for
+    // set the games and variables related scores and score displays to total- for -for , games on finish, to update to start
+        let scoreToDisplay = 0; // get variable total final score in game on
 
- score = 0; //Resets to set score value correct initial value, restart correct
-    scoreToDisplay = 0; //sets intials, correct.
-    rocketCount = 0;   //rocket initial  initial variable value, not rocket as available. (new one after every two pased pipe
+  // variable to reset boost ,
+        let rocketBoostTimeout = null;  // clean time in boost
 
-pipesPassedForRocket = 0;   //set  count passed, restting too to star- pipes to
- scoreDisplayValue.textContent = "0";
- rocketCountDisplayValue.textContent =  "0";
+      // Variables of game set for actions. (for)
+       let touchStartX = 0;
 
-    pipes = [];  //cleared general objects pips.
+          let touchStartY = 0;
 
-    rockets = [];   //Clear rockest internal arrray objects
+ function startGame() {
 
-  gameOverScreen.style.display = 'none';
+      isGameOver = false;  // Game - false , reset, star variable  that represent game variable, set, state, a, false state variable to play
+    birdY = gameContainer.offsetHeight * 0.3333; //  x for top bird, top game. Bird height - y coordinates, and height  axis  , position ( on ) top - Y. Display - correct responsive , as get
 
-  document.querySelectorAll('.pipe, .rocket').forEach(el => el.remove());
-   clearTimeout(rocketBoostTimeout); //clear timer bird . Clean up to last
- // add and creates a game (game loop). Every time add loop time - set a interval (set)
+      birdVelocity = 0;  // variable not  speed to bird and, no - set correctly on. Jump at star not - yet. Reset for
 
-      gameLoopInterval = setInterval(gameLoop, 20);  //
+ score = 0; //Initial score = new value in-
 
- pipeSpawnInterval = setInterval(spawnPipe, 1500);  //Add pipes spawn intervales. Spawn-created and displayed and add games in game  ,
-  //  initial bird correct to position to star playing in start
-        bird.style.top = birdY + 'px'; //Bird display  in Top - and Y axix
-    bird.style.transform = 'rotate(0deg)'; //reset as first and  in games. Rotate
+   scoreToDisplay = 0; // Resets all to first- 0 /null- and set to 0 at ( set variables ),
 
-}
-function jump() {
-    if (!isGameOver) {
-     birdVelocity = jumpStrength;
+    rocketCount = 0;
 
- bird.style.transform = 'rotate(-20deg)';  //
-   }
+     pipesPassedForRocket = 0; // Start- correctly variable in state = o (initial value set a
+     scoreDisplayValue.textContent = "0";  // set first-
+     rocketCountDisplayValue.textContent =  "0";
 
-}
+      pipes = []; //cleared array general- array elements get remove.  and for this- on games (no matter
+     rockets = []; // reset rockts elements array , empty  as at reset
 
- function shootRocket() {
- if (!isGameOver && rocketCount > 0) {
-    rocketCount--;
+     gameOverScreen.style.display = 'none';  // first display, correct
 
-      rocketCountDisplayValue.textContent = rocketCount;
+      // Remove (get), clear , pipes rockets, not rockets  on previous- rockts and pipes. Previous element and object, pipes , rockest removed
+         document.querySelectorAll('.pipe, .rocket').forEach(el => el.remove());
+        //Clears-  to variable (timeout ), clear , variable. ( when rockt created, time after set force variable, restore to after velocity= x). Clean at
+        clearTimeout(rocketBoostTimeout);  // Set at rockt function for fire rockets
 
-      const rocket = document.createElement('div');
-        rocket.classList.add('rocket');
+        gameLoopInterval = setInterval(gameLoop, 20);
+    pipeSpawnInterval = setInterval(spawnPipe, 1500);  //Spawn pipes created
 
-      rocket.innerHTML = '<i class="fas fa-rocket"></i>';  // Set rockt image in game, display style for a good view of all rocket that travel game - game
+     //  Starts set to birds for  start- correctly games , set with position correct at all moments on begin and on to Y -up Y. At new values correct with new correct , reset for restart, with this set initial correctly set, and
+       bird.style.top = birdY + 'px';
+   bird.style.transform = 'rotate(0deg)';   // Set reset when new bird action for
 
-      rocket.style.left = bird.offsetLeft + bird.offsetWidth + 'px';  // left horizontal of screen,
-    rocket.style.top = bird.offsetTop + bird.offsetHeight / 2 + 'px';   // bird Y to center top
-  gameContainer.appendChild(rocket);
-    rockets.push({ element: rocket, x: parseFloat(rocket.style.left) });  //push in rockets to new. Rockets array internal,
-
-      // bird set velocity when rocket
-     clearTimeout(rocketBoostTimeout);
-
-      birdVelocity = 0;
-  rocketBoostTimeout = setTimeout(() => { birdVelocity = gravity; }, 150); // apply back after
   }
 
+
+
+     function jump() { //
+
+           if (!isGameOver) {
+             birdVelocity = jumpStrength;
+     bird.style.transform = 'rotate(-20deg)';
+
+      }
+      }
+   function shootRocket() {
+          if (!isGameOver && rocketCount > 0) {  // Check Game not set  / game playing AND
+
+         rocketCount--;   // decrease, variable to, minus. Total rockts quantity value- that get and- increase. Increase/ decreases from pipes passed or touch/ press/swipe- for, from user(  actions -) actions and actions (game events ).
+
+
+        rocketCountDisplayValue.textContent = rocketCount;  //Update, with variable number for text score/ text values, as display , games  correct set on time real of
+    const rocket = document.createElement('div');
+
+   rocket.classList.add('rocket');
+
+         rocket.innerHTML = '<i class="fas fa-rocket"></i>';
+       rocket.style.left = bird.offsetLeft + bird.offsetWidth + 'px';
+         rocket.style.top = bird.offsetTop + bird.offsetHeight / 2 + 'px';
+
+     gameContainer.appendChild(rocket); //Add (visible. display), visible for at
+            rockets.push({ element: rocket, x: parseFloat(rocket.style.left) }); // new rocket
+     clearTimeout(rocketBoostTimeout);  //Time ,
+   birdVelocity = 0;  // when add, it's a force- in interval , (with force value ) restore for bird  move.  Stop/ clear when rockets has
+
+           // ( ) set for   (add-gravity value, in function of ( rocket, and, bird ) in jump )
+
+ rocketBoostTimeout = setTimeout(() => { birdVelocity = gravity; }, 150);  // add in Y set force that stop when rockeys, when
+
    }
 
-function spawnPipe() {
-      if(isGameOver) return;
-
-    const gapHeight = gameContainer.offsetHeight * 0.25; //get % value
-
-      const minPipeHeight = gameContainer.offsetHeight * 0.083;
-        const maxPipeHeight = gameContainer.offsetHeight - gapHeight - minPipeHeight;
-
-         const topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight;
-         const bottomPipeHeight = gameContainer.offsetHeight - gapHeight - topPipeHeight;
-
-    const topPipe = document.createElement('div');   // element top of a pipe that going though a left direction. Element add class styles for display
-
-         topPipe.classList.add('pipe', 'pipe-top'); // Styles set with CSS name. ( add classes
-   topPipe.style.height = `${topPipeHeight}px`; // get style
-
-  gameContainer.appendChild(topPipe);  // display add and
-
-      const bottomPipe = document.createElement('div');
-
-        bottomPipe.classList.add('pipe', 'pipe-bottom');   // Add Bottom pipe style classes
-   bottomPipe.style.height = `${bottomPipeHeight}px`;// display correctly on style
-
-         gameContainer.appendChild(bottomPipe);
-
-       pipes.push({ top: topPipe, bottom: bottomPipe, x: gameContainer.offsetWidth });
-
-   }
-
-
-
- function gameLoop() {
-
-    if (isGameOver) return;
-
-    if (birdVelocity > 2) {
-      bird.style.transform = 'rotate(45deg)';
-    }
-   else if (birdVelocity < -2)
-
-      {
-          bird.style.transform = 'rotate(-20deg)';
         }
-    else {
 
 
-    bird.style.transform = 'rotate(0deg)';
-     }
+      function spawnPipe() { // spawns new game, created new , with
+    if(isGameOver) return;
+           const gapHeight = gameContainer.offsetHeight * 0.25;   // get variables. set new
 
-      birdVelocity += gravity;  // add force of GRAVITY, value add- to get always - goes down at certain variable of speed gravity to drop as normal ( and gravity always set
+             const minPipeHeight = gameContainer.offsetHeight * 0.083;
 
-   birdY += birdVelocity;
-    bird.style.top = birdY + 'px';
-
- // Colissions bird- on top or roof .
-
-          if (birdY + bird.offsetHeight > gameContainer.offsetHeight || birdY < 0)
-     {  // top and  Bottom -
-
-      gameOver();  // Bird-collision  in horizontal , ( on roof/  ceiling )  with TOP (top) of GAME or BOTTOM  ( floor )
-          }
-
-      //Rocket - rockets travel every element  in display. (as new elementes-
-
-     for (let i = rockets.length - 1; i >= 0; i--)
-      {
-           rockets[i].x += ROCKET_SPEED;
-      rockets[i].element.style.left = rockets[i].x + 'px'; // display to forward rocket to all new rockest (x++)
+          const maxPipeHeight = gameContainer.offsetHeight - gapHeight - minPipeHeight;
+         const topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight;
+     const bottomPipeHeight = gameContainer.offsetHeight - gapHeight - topPipeHeight;
 
 
-           for (let j = pipes.length - 1; j >= 0; j--) {
+            const topPipe = document.createElement('div');
+        topPipe.classList.add('pipe', 'pipe-top');
 
-    if (rockets[i] &&
+       topPipe.dataset.hits = '0';          // Add data-hits. new add. data to pips top
+         topPipe.style.height = `${topPipeHeight}px`;   // top
+  gameContainer.appendChild(topPipe);   // adds- Display. Set this on new pipe to on for game(view ) up - screen, set.
+         const bottomPipe = document.createElement('div');
+       bottomPipe.classList.add('pipe', 'pipe-bottom');
+           bottomPipe.dataset.hits = '0';     // Add data-hits
 
-                   rockets[i].x + rockets[i].element.offsetWidth > pipes[j].x &&
-                   rockets[i].x < pipes[j].x + pipes[j].top.offsetWidth &&
-
-
-                    (rockets[i].element.offsetTop < pipes[j].top.offsetHeight || //rockert TOP
-
-             rockets[i].element.offsetTop + rockets[i].element.offsetHeight > gameContainer.offsetHeight - pipes[j].bottom.offsetHeight))
-                 {
-
-
-
-           pipes[j].top.remove();  //TOP/ remove bottom (pipes get two objectes, two div.  Up and botto
-
-            pipes[j].bottom.remove();
+          bottomPipe.style.height = `${bottomPipeHeight}px`;  //
+         gameContainer.appendChild(bottomPipe); // add visible
 
 
-                    pipes.splice(j, 1);
+        // object , variable pipes set internal to general total for, increase pipes created variable with ( add element ) pipe element general top , general total for games display - up
+             pipes.push({ top: topPipe, bottom: bottomPipe, x: gameContainer.offsetWidth ,hits: 0}); //  object to, push data hit initial to start
 
-                  rockets[i].element.remove();
-                   rockets.splice(i,1);
+        }
 
-
-                break; //removed pipes rockets
-                 }
-
-
-               }
-
-            // check remove rockts - remove pipes. Rockes (array, object ) get removes, check remove pipes to clean elements
-               if (rockets[i] && rockets[i].x > gameContainer.offsetWidth) {
-            rockets[i].element.remove();
-
-                 rockets.splice(i, 1);  // Delete - Remove
-
-
+      function gameLoop() {
+      if (isGameOver) return;
+         if (birdVelocity > 2) {
+          bird.style.transform = 'rotate(45deg)';
              }
 
- }
+             else if (birdVelocity < -2)
+         {  // check top rotate when. Top force velocity, user jumps, at up direction - velocity ( negative as. To, for  games). To for that direction - when  get Up for birds actions  up (and after  ) for after and down(gravity
 
-       for (let i = pipes.length - 1; i >= 0; i--) {   // pipes element
+                 bird.style.transform = 'rotate(-20deg)';// rotata
+           }
+         else {   // set to always as a value that user , at
 
-             pipes[i].x -= pipeSpeed;
-     pipes[i].top.style.left = pipes[i].x + 'px';
+     bird.style.transform = 'rotate(0deg)';   // reset bird. No going - top
 
+         }
 
-       pipes[i].bottom.style.left = pipes[i].x + 'px';
+            birdVelocity += gravity;   // bird gravity
+        birdY += birdVelocity; //   bird Y variable, to top  or add/increase
 
-         //Colision, Pipe with
-       if (  // Horizontal, x + offset of pipes. All pips, that x- (move to forward is pipes[x].speed
+             bird.style.top = birdY + 'px';
+         if (birdY + bird.offsetHeight > gameContainer.offsetHeight || birdY < 0) //roofs
+        {  // colission if bottom
 
-                  bird.offsetLeft + bird.offsetWidth > pipes[i].x &&
-
-           bird.offsetLeft < pipes[i].x + pipes[i].top.offsetWidth &&
-
-
-
-                   (birdY < pipes[i].top.offsetHeight ||
-
-                        birdY + bird.offsetHeight > gameContainer.offsetHeight - pipes[i].bottom.offsetHeight)
-
-           )
-           {
-              gameOver();
-       }
-       if (pipes[i].x + pipes[i].top.offsetWidth < bird.offsetLeft && !pipes[i].scored)
-             {
-
-        pipes[i].scored = true;  //  One all- pipe pass
-
-      score++;  // Actual
-
-      scoreToDisplay = score; // Actual update to. Display
-     pipesPassedForRocket++;  // to gain  , + 1 for 1 pipe passed, after earn x
-
-         if (pipesPassedForRocket >= 2) {
-              rocketCount++;  // increase total
-
-
-            pipesPassedForRocket = 0;
-
-        }
-           scoreDisplayValue.textContent = scoreToDisplay;   //text to. Update rocket counts to top display value
-
-            rocketCountDisplayValue.textContent = rocketCount;
-
+                 gameOver(); // call at time, up or when game bird to/ from the birds collision / at with ( roof -top top game(
 
       }
 
-    //pipes remeves , get array off games to display ,
+       // rockes games, always, check on x , pipes. Rockes in horizontal always, for every to add/ remove rockest
+    for (let i = rockets.length - 1; i >= 0; i--) {
+          rockets[i].x += ROCKET_SPEED;
+           rockets[i].element.style.left = rockets[i].x + 'px'; // update. Goes alway at. Update. Increase horizontal in games
 
-     if(pipes[i].x + pipes[i].top.offsetWidth < 0)
-            {
+             for (let j = pipes.length - 1; j >= 0; j--) {
+                 if (rockets[i] && // Rocket if
+
+                  rockets[i].x + rockets[i].element.offsetWidth > pipes[j].x && //
+                       rockets[i].x < pipes[j].x + pipes[j].top.offsetWidth &&  // Check Y of bird, and - from user  between
 
 
-      pipes[i].top.remove(); // removes ( x
+                     (rockets[i].element.offsetTop < pipes[j].top.offsetHeight ||
+                           rockets[i].element.offsetTop + rockets[i].element.offsetHeight > gameContainer.offsetHeight - pipes[j].bottom.offsetHeight)) //  pipe (bottom) and pipe top
 
-                pipes[i].bottom.remove();  // Botto removes
+             {
+              // Collision logic updated: check, rockt / hit colision pipes. Top
+                        // rockets and
+
+                //pipes set values to top pipe ( element DOM
+
+               let topHits = parseInt(pipes[j].top.dataset.hits);  // get a number with 'parseInts' with element-dataset - get total, variable and top with pipes
+                      let bottomHits = parseInt(pipes[j].bottom.dataset.hits);   // Get general. Pipes and variables values data, related data internal for game variables set, a pipes with value general and  and get to this at all
 
 
-           pipes.splice(i,1);   // object game remove and cleaned ,
+    // rockts/pipes elements variables check. Internal Game Elements  collisions top variable from with two rockt variables, collision - x
 
-            }
+                    if (topHits < 2 && bottomHits < 2) // Checks rocktes, if so. Not set to bottom (hit for game)
+
+          {       // top hits increases when.
+                    pipes[j].top.dataset.hits =  String(topHits + 1); //update pipe data element- top,  set - total
+                   pipes[j].bottom.dataset.hits = String(bottomHits + 1);  //bottom
+                // classes for damaged- remove  not set to styles to visual check, first set ( as visual user view of screen ). As classes changes to add CSS classes from  element pips - bottom. Pipe add with CSS, for damage to variable of element with two values and elements games.
+          pipes[j].top.classList.add('damaged');  // top and pipe bottom damage classes. add the class damage
+           pipes[j].bottom.classList.add('damaged'); // visual  element damage for CSS
+
+                } // pipes ( remove), to set to. Rocket to variable removed on after - check
+                    // removed when.
+
+        else {    //  if not, when the x is
+                  pipes[j].top.remove();  // Pipes and bottom (and to down -  two element and
+                        pipes[j].bottom.remove(); // removed  / element, removed - x( horizontal and forward, element for user display). removed to games, when
+                   pipes.splice(j, 1);
+
+                          }  // Removed, with internal, removed. Elements. Element
+
+      //
+              rockets[i].element.remove();
+
+                rockets[i].element.remove();
+         rockets.splice(i,1);
+
+                 break;   //break collision detect
+
+
+                 } // remove - element
+        }  // when, x remove
+
+       // get check, after time
+          if (rockets[i] && rockets[i].x > gameContainer.offsetWidth) //Check , left - out.
+        {   // remove elements, remove
+           rockets[i].element.remove(); // removed
+
+               rockets.splice(i, 1);
+
+               } // when off. Games check get
+
+      }  // pips , pipes display game- pipes always. For- elementes with top always
+
+                //Pipes
+
+           for (let i = pipes.length - 1; i >= 0; i--) {
+
+               pipes[i].x -= pipeSpeed;
+
+
+              pipes[i].top.style.left = pipes[i].x + 'px';
+      pipes[i].bottom.style.left = pipes[i].x + 'px';
+
+
+           if (   //
+
+         bird.offsetLeft + bird.offsetWidth > pipes[i].x &&
+
+         bird.offsetLeft < pipes[i].x + pipes[i].top.offsetWidth &&
+
+        (birdY < pipes[i].top.offsetHeight ||
+
+             birdY + bird.offsetHeight > gameContainer.offsetHeight - pipes[i].bottom.offsetHeight))
+
+        {
+                  gameOver();
+                  }
+                if (pipes[i].x + pipes[i].top.offsetWidth < bird.offsetLeft && !pipes[i].scored) { //score when not colision and games
+
+                  pipes[i].scored = true;  // game passsed by bird  as , scores  and, display - variables internal for display/ to
+
+                score++; // Score up in games.
+
+         scoreToDisplay = score;   //  add variable
+       pipesPassedForRocket++;
+              if (pipesPassedForRocket >= 2) { //if score is >= 2 ( x for  win, win rockets-
+
+             rocketCount++; // add
+
+            pipesPassedForRocket = 0;   // Resets to, two (top - one- all) elements -pipe
+        }
+
+               scoreDisplayValue.textContent = scoreToDisplay;  // text as number variable to general display score values with its values text with set as scores, add on to with text for display (on for x of variables (top))
+
+         rocketCountDisplayValue.textContent = rocketCount;   //Total
      }
- }
+    if(pipes[i].x + pipes[i].top.offsetWidth < 0){ // Pipe off x check. removed- off as get display check remove for when , from display games get/check elements game when remove
 
-  function gameOver() {
-
-          isGameOver = true;
-
-      clearInterval(gameLoopInterval);
-
-        clearInterval(pipeSpawnInterval);
- finalScoreDisplay.textContent = "Final Score: " + scoreToDisplay;
-
-   gameOverScreen.style.display = "block";
-    //   games. Display  with block - games set,
-    //  Game Over Display
- clearTimeout(rocketBoostTimeout);   // Clear last Time bird boost, stop and restore correctly, for restart the correct user flaying actions
-   }
+         pipes[i].top.remove();
 
 
-  //
-   gameContainer.addEventListener('touchstart', (event) => { //add for toch ( no matter
+           pipes[i].bottom.remove();
+            pipes.splice(i,1); //Remove game to (game removed) after that,
 
-            event.preventDefault(); // Prevent
-
-    touchStartX = event.touches[0].clientX;
-  touchStartY = event.touches[0].clientY;
-
-   jump();
-
-});
-
- // Event Touched ( and touch removed),  Touch for rocket
-  gameContainer.addEventListener('touchend', (event) => {
-
-      event.preventDefault();
+               }
 
 
-  const touchEndX = event.changedTouches[0].clientX;
-    const touchEndY = event.changedTouches[0].clientY;
-
-          const deltaX = touchEndX - touchStartX;
-
-
-       const deltaY = touchEndY - touchStartY;
-
-        if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 50) {
-             shootRocket(); //add and call shootRocket
-
-          }
-
-     });
-
-
-
-     document.addEventListener('keydown', (event) => { //keyboard ( PC / Computer )
-
-            if (event.code === 'Space') {
-
-     jump();
-        }else if (event.code === 'KeyX'){
-            shootRocket();
          }
 
-   });
+          }
+     function gameOver() {  // Game and check set status if and new for get- this in set correct/ set variables, time as correct values games in on status correct if or to get. Set , set
+        isGameOver = true;  // Game on end. All games loop and loop and - that check ( check for any x( variables , times/variables, at any times ). End, set game- when for x
 
-   restartButton.addEventListener('click', startGame);  // Restar add , click new game start
-        startGame();
-     </script>
-  </body>
-   </html>
+         clearInterval(gameLoopInterval); //Clean for  times(intervals set with loop
+
+             clearInterval(pipeSpawnInterval);  // time get. To get loop. Check
+ finalScoreDisplay.textContent = "Final Score: " + scoreToDispla
