@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird with Improved Icons</title>
+    <title>Flappy Bird - Dark Theme</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        body {
+      body {
             font-family: sans-serif;
             overflow: hidden;
             margin: 0;
@@ -14,431 +14,535 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #70c5ce;
+            background-color: #121212; /* Dark background */
         }
-
         #game-container {
-            position: relative;
-            width: 400px;
-            height: 600px;
-            border: 2px solid black;
-            background-color: #70c5ce;
-            overflow: hidden;
-        }
+             position: relative;
+              /* Responsive: use percentages instead of fixed pixels */
+             width: 95%;  /* Take up most of the screen width, leave some margin */
+              max-width: 400px;  /* But don't exceed 400px on large screens */
+              height: 90vh;   /* 90% of the viewport height */
+             max-height: 600px;  /* Limit maximum height as well */
+             border: 2px solid #ddd;   /* Light border for dark theme */
+            background-color: #1e1e1e; /* Slightly lighter dark for contrast */
+           overflow: hidden;
 
-        /* Use Font Awesome for the bird */
-        #bird {
-            position: absolute;
-            left: 50px;
-            top: 200px;
-            font-size: 30px; /* Adjust size as needed */
-            color: yellow;
-            z-index: 10;  /* Ensure bird is above pipes */
-             transform-origin: center; /* For rotation */
-        }
-       .pipe {
-          position: absolute;
-            width: 60px;
-            background-color: #4CAF50; /* Darker Green */
-            box-sizing: border-box;
-            left: 400px;
-            border: 3px solid #2E7D32;   /* Even darker border */
-             border-radius: 5px;         /* Slightly rounded corners */
-       }
+      }
 
+       #bird {
+           position: absolute;
+          left: 12.5%;    /* Responsive positioning:  percentage-based  */
+            top: 33.33%;    /* Keep the aspect ratio of the initial position */
+          font-size: 7vw; /* Responsive font size */
+            max-font-size: 30px;    /* maximum absolute  sizes  */
+            color: #ffd700;  /* Brighter gold */
+            z-index: 10;
+           transform-origin: center;
+          }
+
+     .pipe {
+        position: absolute;
+         width: 15%;       /* Responsive: Use a percentage of the game container */
+          max-width: 60px;  /*  limit max absolute width, like the original */
+        background-color: #4CAF50;
+       box-sizing: border-box;
+
+         left: 100%;       /* Starts fully off-screen to the right. */
+         border: 3px solid #2E7D32;
+           border-radius: 5px;
+     }
 
         .pipe-top {
             top: 0;
-        }
+       }
 
         .pipe-bottom {
             bottom: 0;
         }
-      #top-bar {
+
+     #top-bar {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 40px; /* Adjust as needed */
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-        color: white;
-        display: flex;
-        justify-content: space-between; /* Space between score and rockets */
+         width: 100%;
+         height: auto; /* Height based on content (better for varying font sizes) */
+           background-color: rgba(0, 0, 0, 0.5);
+          color: white;
+           display: flex;
+            justify-content: space-between;
+           align-items: center;
+           padding: 2% 2%; /* Responsive padding */
+          z-index: 10;
+          box-sizing: border-box;
+       }
+     #score-display, #rocket-count-display {
+       display: flex;
         align-items: center;
-        padding: 0 10px;
-        z-index: 10;
-        box-sizing: border-box; /* Include padding in width/height */
-     }
 
+            font-size: 4vw; /* Responsive: */
 
-        #score-display, #rocket-count-display {
-            display: flex;
-            align-items: center; /* Vertically center icon and text */
-            font-size: 18px; /* Keep this, but make sure it's consistent */
-         }
+         max-font-size: 18px;
+      }
+   #score-display i, #rocket-count-display i {
 
+        margin-right: 5px;  /* Still needed, relative to text size*/
 
-         #score-display i, #rocket-count-display i {
-           margin-right: 5px; /* Space between icon and number */
-            font-size: 24px;    /* Larger icons */
+       font-size: 6vw;        /* icons font */
+
+     max-font-size: 24px;   /* Max size on larger displays  */
+
         }
 
-        #game-over-screen {
+
+      #game-over-screen {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 20;
-            text-align: center;
-        }
- #instructions {
-            margin-bottom: 10px; /* Space between instructions and button */
-            font-size: 16px;
+          transform: translate(-50%, -50%);
+           background-color: rgba(0, 0, 0, 0.7);
+           color: white;
+            padding: 20px;   /* You *could* make this responsive (e.g.,  4% 8%) */
+          border-radius: 10px;
+        display: none;
+
+           z-index: 20;
+         text-align: center;
 
         }
+      #instructions {
 
-        #restart-button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-             background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-          #restart-button:hover {
-            background-color: #3e8e41; /* Darker green on hover */
+             margin-bottom: 10px;
+
+            font-size:  4vw;    /* Use vw */
+
+              max-font-size: 16px;   /* Add the limit*/
           }
 
 
-          .rocket { /*Styling the rockets*/
+           #restart-button {
+             margin-top: 10px;
+
+               padding: 2vw 4vw;     /*  padding (percentages)  */
+               font-size: 4vw;     /* text font size (percent)*/
+            max-font-size: 16px;    /* With a reasonable absolute limit*/
+             background-color: #4CAF50;
+              color: white;
+
+              border: none;
+           border-radius: 5px;
+
+               cursor: pointer; /* keep pointer, always useful.*/
+       }
+
+
+         #restart-button:hover {
+
+            background-color: #3e8e41;
+           }
+
+
+         .rocket {
               position: absolute;
-            width: 10px;
-             height: 20px;
-            background-color: transparent; /*  Transparent*/
+              width: 2.5%;         /* Make the rocket relatively sized  */
+
+            max-width: 10px;     /* keep a sane maximum width */
+             height: auto;        /* auto Height. height based on width + aspect */
+          background-color: transparent;
+
             /* No transition for a smoother launch */
-             z-index: 5;
-        }
 
-         .rocket i {  /*style rocket icon*/
+              z-index: 5;
+        }
+         .rocket i {
+
              color: red;
-             font-size: 20px;
 
-         }
-        #final-score{ /*Make Score final, bigger*/
-          font-size: 25px;
+               font-size: 5vw;  /* Responsive, Use % (percentage), relative parent.*/
+             max-font-size: 20px;   /* keep  good look*/
+
+      }
+
+
+      #final-score{
+
+           font-size: 6vw;     /* Relative to viewport width  */
+
+        max-font-size: 25px;
+
           font-weight: bold;
+       }
 
-        }
 
-    </style>
+   </style>
 </head>
 <body>
     <div id="game-container">
-           <div id="top-bar">
-            <div id="score-display"><i class="fas fa-star"></i><span id="score-value">0</span></div>  <!--Score div and number separeted -->
-             <div id="rocket-count-display"><i class="fas fa-rocket"></i><span id="rocket-value">0</span></div> <!--Icon Rocket, with separate text-->
-
-         </div>
-        <div id="bird"><i class="fas fa-dove"></i></div>  <!-- Use the dove icon -->
+        <div id="top-bar">
+            <div id="score-display"><i class="fas fa-star"></i><span id="score-value">0</span></div>
+            <div id="rocket-count-display"><i class="fas fa-rocket"></i><span id="rocket-value">0</span></div>
+        </div>
+        <div id="bird"><i class="fas fa-dove"></i></div>
 
         <div id="game-over-screen">
            <div id="instructions">
-            Press 'Space' to jump, 'X' to shoot a rocket.
-          </div>
-            <h2>Game Over</h2>
+            Press 'Space' to jump, 'X' to shoot.
+           </div>
+          <h2>Game Over</h2>
             <p id="final-score"></p>
-            <button id="restart-button">Restart</button>
+          <button id="restart-button">Restart</button>
         </div>
     </div>
 
-    <script>
+     <script>
+
       const bird = document.getElementById('bird');
         const gameContainer = document.getElementById('game-container');
-         const scoreDisplayValue = document.getElementById('score-value');   // Score NUMBER
-        const rocketCountDisplayValue = document.getElementById('rocket-value'); // Rocket NUMBER.
-        const gameOverScreen = document.getElementById('game-over-screen');
-        const finalScoreDisplay = document.getElementById('final-score');
-        const restartButton = document.getElementById('restart-button');
+        const scoreDisplayValue = document.getElementById('score-value');
+      const rocketCountDisplayValue = document.getElementById('rocket-value');
+      const gameOverScreen = document.getElementById('game-over-screen');
+         const finalScoreDisplay = document.getElementById('final-score');
+         const restartButton = document.getElementById('restart-button');
 
-        let birdY = 200;
-        let birdVelocity = 0;
-        const gravity = 0.5;
-        const jumpStrength = -8;
-        let gameLoopInterval;
-        let pipeSpawnInterval;
-        let score = 0;
+
+    let birdY = 200;
+    let birdVelocity = 0;
+   const gravity = 0.5;
+    const jumpStrength = -8;
+     let gameLoopInterval;
+      let pipeSpawnInterval;
+      let score = 0;
         let isGameOver = false;
-        let pipes = [];
-        let pipeSpeed = 2;
+    let pipes = [];
+   let pipeSpeed = 2;  // You *could* make this responsive, but tricky.  Best left alone
         let rockets = [];
-        let rocketCount = 0; // Rockets user has
-        const ROCKET_SPEED = 8;
-        let pipesPassedForRocket = 0; //Counter to rockets
-        let scoreToDisplay = 0;  // Score to be show
 
-           function startGame() {
+      let rocketCount = 0;
+
+      const ROCKET_SPEED = 8;  // Also fine to leave as a fixed value
+
+   let pipesPassedForRocket = 0;
+     let scoreToDisplay = 0;
+
+   let rocketBoostTimeout = null;  // Vertical rocket boost
+
+
+
+     function startGame() {
+
              isGameOver = false;
-            birdY = 200;
-            birdVelocity = 0;
-             score = 0;
-            scoreToDisplay = 0; //reset to show on restart
-             rocketCount = 0;   // Reset rockets count, back to 0
-             pipesPassedForRocket = 0;  // Reset variable of charge rockets, back to 0
-            scoreDisplayValue.textContent = "0";
-            rocketCountDisplayValue.textContent =  "0";
-           pipes = [];  // Pipes to reset
-             rockets = []; //Reset rockets array
-             gameOverScreen.style.display = 'none';  //display first time
 
-            document.querySelectorAll('.pipe, .rocket').forEach(el => el.remove());
-            gameLoopInterval = setInterval(gameLoop, 20); //game start
-           pipeSpawnInterval = setInterval(spawnPipe, 1500); //spaw pipes, 1.5 secons, on start
-             bird.style.top = birdY + 'px'; //reset
-             bird.style.transform = 'rotate(0deg)'; // Reset bird rotatio
+            birdY = gameContainer.offsetHeight * 0.3333; //Start correct , 33.3%
+          birdVelocity = 0;
+
+              score = 0;
+                scoreToDisplay = 0; //Resets.
+
+         rocketCount = 0; // Start 0
+
+          pipesPassedForRocket = 0;  //Start correct
+       scoreDisplayValue.textContent = "0";  //restart to start at value
+         rocketCountDisplayValue.textContent =  "0";
+      pipes = []; //pipes cleared
+
+        rockets = [];  //Rockets cleared
+
+        gameOverScreen.style.display = 'none';  //restart
+
+         //clear pipe rockets on restar game, all pipes that existed at start time
+          document.querySelectorAll('.pipe, .rocket').forEach(el => el.remove());
+          // Clear previous timeout (important for restarting!)
+          clearTimeout(rocketBoostTimeout);
+
+
+            gameLoopInterval = setInterval(gameLoop, 20);
+
+              pipeSpawnInterval = setInterval(spawnPipe, 1500);
+
+
+                bird.style.top = birdY + 'px';
+
+          bird.style.transform = 'rotate(0deg)'; // rotate. Reset
+            }
+
+
+
+
+    function jump() {
+          if (!isGameOver) {
+             birdVelocity = jumpStrength;
+              bird.style.transform = 'rotate(-20deg)';
+
            }
-
-
-           function jump() {
-            if (!isGameOver) {
-                 birdVelocity = jumpStrength; //jump bird
-                bird.style.transform = 'rotate(-20deg)'; //rotate if is going up
-             }
-           }
-        function shootRocket() {
-          if (!isGameOver && rocketCount > 0) {  // Ensure user still exist before shooting
-
-               rocketCount--; // Decrease count
-            rocketCountDisplayValue.textContent = rocketCount;   // Actual rocket counts on display
-
-
-           const rocket = document.createElement('div');  // create new Rocket every shoot
-
-            rocket.classList.add('rocket'); // class 'rocket' style from CSS
-
-          rocket.innerHTML = '<i class="fas fa-rocket"></i>'; //use a forntAwesome
-
-         rocket.style.left = bird.offsetLeft + bird.offsetWidth + 'px'; //x coordinate
-
-        rocket.style.top = bird.offsetTop + bird.offsetHeight / 2 + 'px'; // y coordinate
-             gameContainer.appendChild(rocket); // Append to actual screen, making it appear
-
-        rockets.push({ element: rocket, x: parseFloat(rocket.style.left) });  // update internal 'rocket' arrat
-
-         }
       }
-        function spawnPipe() {
-             if(isGameOver) return; //No spaw pipe if game over
 
-              const gapHeight = 150; //min to travel, 150 pixes, between pipe
 
-              const minPipeHeight = 50; //at leats one space
 
+    function shootRocket() {
+        if (!isGameOver && rocketCount > 0) {
+
+              rocketCount--;
+              rocketCountDisplayValue.textContent = rocketCount;
+
+
+              const rocket = document.createElement('div');
+
+             rocket.classList.add('rocket');
+               rocket.innerHTML = '<i class="fas fa-rocket"></i>'; //Font awesome for rocket
+
+            rocket.style.left = bird.offsetLeft + bird.offsetWidth + 'px'; //x
+
+              rocket.style.top = bird.offsetTop + bird.offsetHeight / 2 + 'px'; //y
+                gameContainer.appendChild(rocket);
+
+        rockets.push({ element: rocket, x: parseFloat(rocket.style.left) });  // update internal rocket
+
+
+
+        //  rocket boost, up bird in 150millis. Cleared, so no buggin fly bird
+
+       clearTimeout(rocketBoostTimeout);
+      birdVelocity = 0;   // Remove velocity
+      rocketBoostTimeout = setTimeout(() => { birdVelocity = gravity; }, 150);
+      }
+         }
+
+      function spawnPipe() {
+          if (isGameOver) return;
+
+            const gapHeight = gameContainer.offsetHeight * 0.25; // Responsive. GAP proportional
+
+          const minPipeHeight = gameContainer.offsetHeight * 0.083; // 8.3 % min
              const maxPipeHeight = gameContainer.offsetHeight - gapHeight - minPipeHeight;
 
-          const topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight; //Make pipes dynamic. Top
-              const bottomPipeHeight = gameContainer.offsetHeight - gapHeight - topPipeHeight;
+           const topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight; //pipe, range
 
-             const topPipe = document.createElement('div');   // Top Pipe
+            const bottomPipeHeight = gameContainer.offsetHeight - gapHeight - topPipeHeight;  // Bottom height
 
-              topPipe.classList.add('pipe', 'pipe-top'); // get its style class  from CSS, same style as others
 
-               topPipe.style.height = `${topPipeHeight}px`;// dynamic.  height of top pipes
+              const topPipe = document.createElement('div');
 
-              gameContainer.appendChild(topPipe); // actual container in  position
+         topPipe.classList.add('pipe', 'pipe-top');
 
-              const bottomPipe = document.createElement('div');  //bottom Pipe, now.
-               bottomPipe.classList.add('pipe', 'pipe-bottom'); // add the style, same style from before pipes
+          topPipe.style.height = `${topPipeHeight}px`; //actual pipe
+           gameContainer.appendChild(topPipe);
 
-               bottomPipe.style.height = `${bottomPipeHeight}px`;  // Dynamic. Top
-               gameContainer.appendChild(bottomPipe); // update and display position.
-               pipes.push({ top: topPipe, bottom: bottomPipe, x: gameContainer.offsetWidth }); //update 'pipes' to new display. Every object in game
+
+             const bottomPipe = document.createElement('div');
+
+                bottomPipe.classList.add('pipe', 'pipe-bottom'); // same  for class name
+
+
+         bottomPipe.style.height = `${bottomPipeHeight}px`;  // Pipe botton
+              gameContainer.appendChild(bottomPipe); //Display pipes bottom
+
+            pipes.push({ top: topPipe, bottom: bottomPipe, x: gameContainer.offsetWidth });  // add object of array 'pipes' to all display.
+
+         }
+
+
+
+     function gameLoop() {
+
+       if (isGameOver) return;
+
+         //Bird rotation. Rotates the bird
+
+           if (birdVelocity > 2) {
+           bird.style.transform = 'rotate(45deg)';
+              }
+
+              else if (birdVelocity < -2) {
+              bird.style.transform = 'rotate(-20deg)'; //rotate up bird
+
              }
 
+              else {
 
+            bird.style.transform = 'rotate(0deg)';  // Reset
 
-         function gameLoop() {
-          if (isGameOver) return; //return on every action
+        }
 
+           birdVelocity += gravity;  // apply gravity  time, goes
+          birdY += birdVelocity;     // bird position, to be
 
-              // Bird rotation based on velocity
+             bird.style.top = birdY + 'px';  // apply move style
+         // colission floor or roof
 
-            if (birdVelocity > 2) {  // check down if so, tilt
-             bird.style.transform = 'rotate(45deg)';  // tilt up bird,
+          if (birdY + bird.offsetHeight > gameContainer.offsetHeight || birdY < 0) {  //top / buttom
 
-          }
-           else if (birdVelocity < -2) //going up
-           {
-                bird.style.transform = 'rotate(-20deg)';
+              gameOver();  //colision bird Top /Bottom.
+
                }
-               else{ //else still stady
-                  bird.style.transform = 'rotate(0deg)'; //N
-                 }
 
-           birdVelocity += gravity; // Apply GRAVITY always
-           birdY += birdVelocity;  // Apply Bird move always, move constantly.
 
-            bird.style.top = birdY + 'px';
 
-            // check it colision  botton/top
-               if (birdY + bird.offsetHeight > gameContainer.offsetHeight || birdY < 0) {
-                gameOver();  // GAME OVER, colission detected
+
+            // Rockets managemnt loop. Manage all created
+
+               for (let i = rockets.length - 1; i >= 0; i--)
+
+         {
+            rockets[i].x += ROCKET_SPEED; // forward. Rockets still moviing  horizontal forward to lest, always, as every element
+
+                rockets[i].element.style.left = rockets[i].x + 'px';  //x, moves in screen to forward
+
+
+                  for (let j = pipes.length - 1; j >= 0; j--) {  //collision -pipes,
+
+                     if (rockets[i] && //rocket must still exists. Checks
+                         rockets[i].x + rockets[i].element.offsetWidth > pipes[j].x && //collision. If so
+
+                          rockets[i].x < pipes[j].x + pipes[j].top.offsetWidth && //check x, to inside betwee to colidde, pipes/roclet
+                       (rockets[i].element.offsetTop < pipes[j].top.offsetHeight ||   //top/ rocket top
+
+                       rockets[i].element.offsetTop + rockets[i].element.offsetHeight > gameContainer.offsetHeight - pipes[j].bottom.offsetHeight)) //height -
+
+                       {
+                            // Collision detectede between Rocket <===> pipes Top/Bottom
+                           // removed.
+                           pipes[j].top.remove();
+                         pipes[j].bottom.remove();  //Bottom also removed, as logic of 1-1-2 eleements.
+
+                           pipes.splice(j, 1); //pipes delete to arrat. Remove
+                           // Rocket colideed removed. Rocket is colliding to. It is also get out and removed
+                          rockets[i].element.remove();
+
+                      rockets.splice(i,1); // also 'rockets array' element removed as collision
+
+                             break;  // Rocket x1 at collision with pipe
+                    }
+
+               }
+
+
+
+               // off to screen - to right , horizontal, X cordinates, right now
+
+
+              if (rockets[i] && rockets[i].x > gameContainer.offsetWidth) {
+                  rockets[i].element.remove(); //removed its DOM
+
+                    rockets.splice(i, 1); //delete position too, get array , out position that represent of index x
+
+                }
+
+        }
+
+      //Move pipes, Pipes travel. move from left to rigth, constinours
+          for (let i = pipes.length - 1; i >= 0; i--)
+            {
+             pipes[i].x -= pipeSpeed;
+             pipes[i].top.style.left = pipes[i].x + 'px';  //top
+            pipes[i].bottom.style.left = pipes[i].x + 'px';  //bootton. Always going to x
+            // colision. Pipes  collisions.
+
+         if (
+                bird.offsetLeft + bird.offsetWidth > pipes[i].x && //horitonzal, top
+                bird.offsetLeft < pipes[i].x + pipes[i].top.offsetWidth && //
+
+                   (birdY < pipes[i].top.offsetHeight || //Check to collide Vertical if top Y from User
+                      birdY + bird.offsetHeight > gameContainer.offsetHeight - pipes[i].bottom.offsetHeight) // Y, down colision
+          )
+                 {
+
+                 gameOver(); // colision user - pipe, GAME OVER, bird dies. Colission with top/ Bottom of pipes, vertical
+              }
+
+
+
+              if (pipes[i].x + pipes[i].top.offsetWidth < bird.offsetLeft && !pipes[i].scored) {
+                   //If so  Pipes has been succes passesd. 1 full pipe passed
+                   //pipe
+
+                   pipes[i].scored = true;
+
+             score++;  //increase the value
+                 scoreToDisplay = score;
+                 pipesPassedForRocket++;  // variable counter to gain and know to show a new rocketr. variable
+
+
+
+                    if (pipesPassedForRocket >= 2) //Pipes to add another new rocket , if counter  >= to.
+                    {
+
+                        rocketCount++;
+                      pipesPassedForRocket = 0;
 
                 }
 
 
 
-          // Move and manage rockets (auto), rocket loop,  handle existing  'rockets' array, moving forward to left, or delting its needed
-           for(let i = rockets.length -1;i>= 0; i--)
+                     scoreDisplayValue.textContent = scoreToDisplay;   //update at all
 
-              {
-               rockets[i].x += ROCKET_SPEED; //always move forward, from x, + ROCKET_SPEED to right
-               rockets[i].element.style.left = rockets[i].x + 'px';
+                    rocketCountDisplayValue.textContent = rocketCount; // rockets
 
-
-                 // Rocket-pipe collision and removal
-
-               for(let j= pipes.length - 1; j >= 0;j--)
-
-                {
-                    if (rockets[i] && //checj first rocket, before continuing
-                         rockets[i].x + rockets[i].element.offsetWidth > pipes[j].x &&
-                         rockets[i].x < pipes[j].x + pipes[j].top.offsetWidth &&
-                          (rockets[i].element.offsetTop < pipes[j].top.offsetHeight ||
-                           rockets[i].element.offsetTop + rockets[i].element.offsetHeight > gameContainer.offsetHeight - pipes[j].bottom.offsetHeight))
-
-                       {
-                          // colision of pipe top and rockets
-                          pipes[j].top.remove();
-
-                           pipes[j].bottom.remove(); //pipes bottoms remove
-
-                            pipes.splice(j, 1); //array pipes
-                            //rockes removed, element,
-                         rockets[i].element.remove(); //removed DOM
-                            rockets.splice(i,1);
-
-                            break;
-
-                          }
-                     }
-
-
-                 // Check to removed rockets
-                if (rockets[i] && rockets[i].x > gameContainer.offsetWidth) {  // Rocket existing  off screen from  to right
-                rockets[i].element.remove();
-
-                rockets.splice(i, 1);   // remove Rocket from Array 'rocket'
-                  }
-                 }
-
-
-
-          // Move and manage pipes, its position. Loop that check position of pipes,
-              for (let i = pipes.length - 1; i >= 0; i--)
-             {
-
-             pipes[i].x -= pipeSpeed; //always move pipe to lest
-
-              pipes[i].top.style.left = pipes[i].x + 'px';
-            pipes[i].bottom.style.left = pipes[i].x + 'px';
-
-
-              //check pipe colission with birds. Collision detection: bird with pipes. Collision
-                 if (
-                      bird.offsetLeft + bird.offsetWidth > pipes[i].x &&  // bird at horizontal right > pipes[i]. x, to right
-                      bird.offsetLeft < pipes[i].x + pipes[i].top.offsetWidth && //check horizontal , if inside to pipes range
-                    (birdY < pipes[i].top.offsetHeight ||  // pipe heigths bird and pipes top, checls colission, between pipes top/botton
-
-                         birdY + bird.offsetHeight > gameContainer.offsetHeight - pipes[i].bottom.offsetHeight))
-
-                  {
-                  gameOver(); // GAME OVER, collision, Pipe - User.
-                     }
-                    // update if bird and passed a  a score
-                      if (pipes[i].x + pipes[i].top.offsetWidth < bird.offsetLeft && !pipes[i].scored) { //check  bird to be front, (left side is not colliding
-
-                     pipes[i].scored = true;
-                      score++;  // Actual value score, total
-                     scoreToDisplay = score; //Update display score
-
-                      //every passed pipes. Rocket managament
-                        pipesPassedForRocket++;
-
-                        if (pipesPassedForRocket >= 2) { //add new
-
-                           rocketCount++; // Add new Rocket available to used. Internal, Total amoun
-                            //shootRocket();
-
-                         pipesPassedForRocket = 0;   // Reset
-
-                        }
-
-
-               //updates rockets.
-                      scoreDisplayValue.textContent = scoreToDisplay; //Score display
-                        rocketCountDisplayValue.textContent = rocketCount;
-
-
-                  }
-
-
-          //pipes colision - remove pipes, if goes out of screen
-              if(pipes[i].x + pipes[i].top.offsetWidth < 0){
-                 // Check x offse. Off left, x < o. If off left, goes of scren. If off screen, remove its element and
-
-                pipes[i].top.remove();   //Top pipe is not visible. removed itsel,
-                 pipes[i].bottom.remove(); //botton removed
-
-                  pipes.splice(i,1);     // Remove Pipe removed  in general array , 'pipes' from array game,
-
-
-
-                 }
                }
 
-             }
-
-         function gameOver() {
-
-            isGameOver = true;
-             clearInterval(gameLoopInterval);  //clear actual loop, it is
-             clearInterval(pipeSpawnInterval);   //Stop spawning.
-
-         finalScoreDisplay.textContent = "Final Score: " + scoreToDisplay;
-
-         gameOverScreen.style.display = "block";
-        }
 
 
-
-     document.addEventListener('keydown', (event) => {
-           if (event.code === 'Space') {
-
-           jump();
-        }else if (event.code === 'KeyX'){
-                shootRocket();  // if pressed 'x' rocket created, (add check in funcitons that the users stills exists)
+       //Pipes to remove pipes.  Loop pipes off screen
+       if(pipes[i].x + pipes[i].top.offsetWidth < 0){
+           pipes[i].top.remove();
+           pipes[i].bottom.remove();
+           pipes.splice(i,1);  // out element of general, object in all arrays to delete
+            }
           }
-       });
 
-            document.addEventListener('touchstart', (event) => { //mobile only space
+         }
 
-               if(event.target == gameContainer || event.target == bird){
+       function gameOver() {
 
-                jump();   // Touch support jump
-               }
-
-             });
-                restartButton.addEventListener('click', startGame);
+     isGameOver = true;  // Game endend. All function checks isGame, is is set here, as collision game over
 
 
-                 startGame(); //Starts
-    </script>
-</body>
+     clearInterval(gameLoopInterval);  //clearInterval as a game in proggress
+
+           clearInterval(pipeSpawnInterval);    // set and interval
+
+      // Display final scores
+         finalScoreDisplay.textContent = "Final Score: " + scoreToDisplay; //final
+
+             gameOverScreen.style.display = "block"; // Display game
+
+            //Clear time on game. clear rocket interval on reset.
+
+           clearTimeout(rocketBoostTimeout); // cleared rockets.
+
+              }
+
+
+             document.addEventListener('keydown', (event) => {   //key interactioon space
+                 if (event.code === 'Space') {  //
+              jump();  // Jump if no GAme oever
+            }
+
+             else if (event.code === 'KeyX'){  //press key X for rockeys
+
+                  shootRocket(); //Shot
+                }
+     });
+
+
+
+
+               document.addEventListener('touchstart', (event) => {
+
+                    //
+                  if(event.target == gameContainer || event.target == bird){
+                   jump();  //  touch devices can use only
+                     }
+
+               });
+
+
+
+               restartButton.addEventListener('click', startGame);
+
+
+                startGame();
+
+
+
+        </script>
+    </body>
 </html>
