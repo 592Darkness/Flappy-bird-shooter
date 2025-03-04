@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird - Dark Theme - Mobile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div id="game-container">
+        <div id="top-bar">
+            <div id="score-display"><i class="fas fa-star"></i><span id="score-value">0</span></div>
+            <div id="rocket-count-display"><i class="fas fa-rocket"></i><span id="rocket-value">0</span></div>
+            <div id="high-score-display"><i class="fas fa-trophy"></i><span id="high-score-value">0</span></div>
+        </div>
+        
+        <div id="bird"><i class="fas fa-dove"></i></div>
+        
+        <div id="game-over-screen">
+            <div id="instructions">
+                Tap to jump, swipe right to shoot. Tap to restart.
+            </div>
+            <h2>Game Over</h2>
+            <p id="final-score"></p>
+            <button id="restart-button">Play Again</button>
+        </div>
+        
+        <div id="start-screen">
+            <h1>Flappy Bird</h1>
+            <div id="start-instructions">
+                <p>Tap to jump</p>
+                <p>Swipe right to shoot rockets</p>
+                <p>Destroy pipes and avoid enemies</p>
+            </div>
+            <button id="start-button">Start Game</button>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
